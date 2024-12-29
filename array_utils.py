@@ -1,5 +1,5 @@
 import random
-#random.seed(42)
+# random.seed(42)
 
 def generate_random_array() -> list:
         max_num = input("\nEnter the max number that array can contain:\n-> ")
@@ -8,7 +8,7 @@ def generate_random_array() -> list:
         arr_len = input("\nEnter the length of the array:\n-> ")
         arr_len = int(arr_len) if arr_len.isdigit() else 0
 
-        arr = [random.randint(1, max_num) for _ in range(arr_len)]
+        arr = [random.randint(-max_num, max_num) for _ in range(arr_len)]
         return arr
 
 def manually_generate_array() -> list:

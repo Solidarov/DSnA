@@ -1,4 +1,4 @@
-def insertion_sort(arr:list, arr_len:int):
+def insertion_sort(arr:list, arr_len:int) -> None:
     print(f"\nOriginal array: {arr}")
 
     for i in range(1, arr_len):
@@ -10,7 +10,3 @@ def insertion_sort(arr:list, arr_len:int):
     
     print(f"\nSorted array: {arr}")
 
-
-if __name__ == '__main__':
-    arr = [5, -8, 13, 2, 44, 11, -134, 4]
-    insertion_sort(arr, len(arr))
