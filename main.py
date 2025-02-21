@@ -32,7 +32,7 @@ if __name__ == '__main__':
                        f'\n\tselection sort(0),'
                        f'\n\tinsertion sort(1),'
                        f'\n\tbubble sort(2),'
-                       f'\n->')
+                       f'\n-> ')
                 choice = int(input(msg))
                 if choice == 0:
                     selection_sort(arr, len(arr))
