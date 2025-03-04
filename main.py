@@ -2,6 +2,7 @@ import os
 from sorting_alg.selection_sort import selection_sort
 from sorting_alg.insertion_sort import insertion_sort
 from sorting_alg.bubble_sort import bubble_sort
+from sorting_alg.merge_sort import merge_sort
 from array_utils import generate_random_array, manually_generate_array
 
 
@@ -32,6 +33,7 @@ if __name__ == '__main__':
                        f'\n\tselection sort(0),'
                        f'\n\tinsertion sort(1),'
                        f'\n\tbubble sort(2),'
+                       f'\n\tmerge sort(3)'
                        f'\n-> ')
                 choice = int(input(msg))
                 if choice == 0:
@@ -43,10 +45,15 @@ if __name__ == '__main__':
                 elif choice == 2:
                     bubble_sort(arr, len(arr))
                     break
+                elif choice == 3:
+                    print(f"\nOriginal array: {arr}")
+                    merge_sort(arr, 0, len(arr) - 1)
+                    print(f"\nSorted array: {arr}")
+                    break
                 else:
-                    print('Invalid choice. Enter 0 or 1')
+                    print('Invalid choice. Enter 0/1/2/3')
             except ValueError:
-                print("Invalid input. Enter 0 or 1")
+                print("Invalid input. Enter 0/1/2/3")
     
     except KeyboardInterrupt:
         os.system('clear')
