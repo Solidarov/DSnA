@@ -72,9 +72,9 @@ if __name__ == '__main__':
                     print(f"Sorted array: {arr}")
                     break
                 else:
-                    print('Invalid choice. Enter 0/1/2/3')
+                    print('Invalid choice. Enter 0/1/2/3/4/5/6')
             except ValueError:
-                print("Invalid input. Enter 0/1/2/3")
+                print("Invalid input. Enter 0/1/2/3/4/5/6")
     
     except KeyboardInterrupt:
         os.system('clear')

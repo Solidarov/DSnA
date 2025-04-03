@@ -1,4 +1,4 @@
-def cocktail_sort(arr, arr_len):
+def cocktail_sort(arr: list, arr_len: int) -> None:
     swaped = True
     while swaped:
         swaped = False
@@ -15,10 +15,3 @@ def cocktail_sort(arr, arr_len):
             if arr[i] < arr[i - 1]:
                 arr[i], arr[i-1] = arr[i-1], arr[i]
                 swaped = True
-
-
-if __name__ == '__main__':
-    arr = [5, 1, 4, 2, 8]
-    print(arr)
-    cocktail_sort(arr, len(arr))
-    print(arr)
