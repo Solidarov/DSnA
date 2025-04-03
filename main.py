@@ -5,6 +5,7 @@ from sorting_alg.bubble_sort import bubble_sort
 from sorting_alg.merge_sort import merge_sort
 from sorting_alg.quick_sort import quick_sort
 from sorting_alg.shell_sort import shell_sort
+from sorting_alg.cocktail_sort import cocktail_sort
 from array_utils import generate_random_array, manually_generate_array
 
 
@@ -32,12 +33,13 @@ if __name__ == '__main__':
         while True:
             try:
                 msg = (f'\nSort array with:'
-                       f'\n\tselection sort(0),'
-                       f'\n\tinsertion sort(1),'
-                       f'\n\tbubble sort(2),'
-                       f'\n\tmerge sort(3),'
+                       f'\n\tselection sort(0)'
+                       f'\tinsertion sort(1)'
+                       f'\n\tbubble sort(2)'
+                       f'\t\tmerge sort(3)'
                        f'\n\tquick sort(4)'
-                       f'\n\tshell sort(5)'
+                       f'\t\tshell sort(5)'
+                       f'\n\tcocktail sort(6)'
                        f'\n-> ')
                 choice = int(input(msg))
                 if choice == 0:
@@ -62,6 +64,11 @@ if __name__ == '__main__':
                 elif choice == 5:
                     print(f"Original array: {arr}")
                     shell_sort(arr, len(arr))
+                    print(f"Sorted array: {arr}")
+                    break
+                elif choice == 6:
+                    print(f"Original array: {arr}")
+                    cocktail_sort(arr, len(arr))
                     print(f"Sorted array: {arr}")
                     break
                 else:
