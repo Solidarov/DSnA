@@ -6,6 +6,7 @@ from sorting_alg.merge_sort import merge_sort
 from sorting_alg.quick_sort import quick_sort
 from sorting_alg.shell_sort import shell_sort
 from sorting_alg.cocktail_sort import cocktail_sort
+from sorting_alg.heap_sort import heap_sort
 from array_utils import generate_random_array, manually_generate_array
 
 
@@ -40,6 +41,7 @@ if __name__ == '__main__':
                        f'\n\tquick sort(4)'
                        f'\t\tshell sort(5)'
                        f'\n\tcocktail sort(6)'
+                       f'\theap sort(7)'
                        f'\n-> ')
                 choice = int(input(msg))
                 if choice == 0:
@@ -71,10 +73,15 @@ if __name__ == '__main__':
                     cocktail_sort(arr, len(arr))
                     print(f"Sorted array: {arr}")
                     break
+                elif choice == 7:
+                    print(f"Original array: {arr}")
+                    heap_sort(arr, len(arr))
+                    print(f"Sorted array: {arr}")
+                    break
                 else:
-                    print('Invalid choice. Enter 0/1/2/3/4/5/6')
+                    print('Invalid choice. Enter 0/1/2/3/4/5/6/7')
             except ValueError:
-                print("Invalid input. Enter 0/1/2/3/4/5/6")
+                print("Invalid input. Enter 0/1/2/3/4/5/6/7")
     
     except KeyboardInterrupt:
         os.system('clear')
