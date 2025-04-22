@@ -9,6 +9,7 @@ from concrete_sort_interfaces import (BubbleSortStrategy,
                                       SelectionSortStrategy,
                                       ShellSortStrategy)
 from concrete_search_interfaces import (LinearSearchStrategy,
+                                        LinearSearchWithBarierStrategy,
                                         )
 
 
@@ -36,6 +37,7 @@ class SortFactory:
 class SearchFactory:
     strategies = {
         "linear": LinearSearchStrategy,
+        "linear w/ barier": LinearSearchWithBarierStrategy,
 
     }
     
