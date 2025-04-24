@@ -1,5 +1,7 @@
 from factories import AlgorithmFactoryProducer
 from services import UserInterface
+
+
 if __name__ == "__main__":
     ui = UserInterface()
 
@@ -11,8 +13,7 @@ if __name__ == "__main__":
                                              AlgorithmFactoryProducer.factories)
     factory = AlgorithmFactoryProducer.get_factory(choice_factory)
     
-    ui.clear_screen()
-    choice_stragegy = ui.get_user_choice_dict(f"Which method use to {choice_factory} array", 
+    choice_stragegy = ui.get_user_choice_dict(f"Which method use to {choice_factory}", 
                                               factory.strategies)
     strategy = factory.get_strategy(choice_stragegy)
 

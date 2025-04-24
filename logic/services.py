@@ -1,5 +1,6 @@
 import os
 import random
+import shutil
 from typing import (List,
                     )
 from strategy_interfaces import (SortStrategy,
@@ -25,8 +26,32 @@ class ArrayGenerator:
 
 class UserInterface:
     @staticmethod
-    def clear_screen():
+    def clear_screen() -> None:
         os.system('cls' if os.name == 'nt' else 'clear')
+
+        try:
+            width = shutil.get_terminal_size().columns
+        except:
+            width = 80
+
+        logo=[
+        " __    __    ___  _____  ____  ____  ____  _   _  __  __  ___",
+        "  /__\  (  )  / __)(  _  )(  _ \(_  _)(_  _)( )_( )(  \/  )/ __) ",
+        " /(__)\  )(__( (_-. )(_)(  )   / _)(_   )(   ) _ (  )    ( \__ \ ",
+        "(__)(__)(____)\___/(_____)(_)\_)(____) (__) (_) (_)(_/\/\_)(___/ ",
+        " __    _  _  ____",
+        "  /__\  ( \( )(  _ \ ",
+        " /(__)\  )  (  )(_) ) ",
+        "(__)(__)(_)\_)(____/ ",
+        "____    __   ____   __      ___  ____  ____  __  __  ___  ____  __  __  ____  ____  ___",
+        "(  _ \  /__\ (_  _) /__\    / __)(_  _)(  _ \(  )(  )/ __)(_  _)(  )(  )(  _ \( ___)/ __) ",
+        " )(_) )/(__)\  )(  /(__)\   \__ \  )(   )   / )(__)(( (__   )(   )(__)(  )   / )__) \__ \\",
+        "(____/(__)(__)(__)(__)(__)  (___/ (__) (_)\_)(______)\___) (__) (______)(_)\_)(____)(___/",
+        "\n\n\n",
+        ]
+
+        for line in logo:
+            print(line.center(width))
     
     @staticmethod
     def get_user_choice_dict(msg: str, options: dict) -> str:

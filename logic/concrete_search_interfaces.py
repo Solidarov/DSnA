@@ -1,6 +1,9 @@
 from typing import (List,
                     Optional)
-from strategy_interfaces import (SearchStrategy,)
+from strategy_interfaces import (SearchStrategy,
+                                 )
+from concrete_sort_interfaces import (QuickSortStrategy,
+                                      )
 
 
 class LinearSearchStrategy(SearchStrategy):
@@ -26,5 +29,26 @@ class LinearSearchWithBarierStrategy(SearchStrategy):
             return idx
         
 
+class BinarySearchStrategy(SearchStrategy):
+    def _sort_array(self, arr: List[int]) -> None:
+        sorter = QuickSortStrategy()
+        sorter.sort(arr)
+        print(f"\nSorted array: {arr}")
 
+    def search(self, arr: List[int], target: int) -> Optional[int]:
+        self._sort_array(arr)
 
+        arr_len = len(arr)        
+        
+        high = arr_len - 1
+        low = 0
+        while high > low:
+            mid = (high + low) // 2
+            if target == arr[mid]:
+                return mid
+            elif target > arr[mid]:
+                low = mid + 1
+            elif target < arr[mid]:
+                high = mid - 1
+            else:
+                print("Something went wrong!")
