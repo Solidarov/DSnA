@@ -50,9 +50,9 @@ class UserInterface:
 
         msg = "Enter the name of vertices, separate by space -> "
         vertices = self._get_user_input(msg, 'few')
-        self.graphs[graph_name] = UndirectedGraph(*vertices)
+        self.graphs[graph_name] = UndirectedGraph(vertices)
 
-        opt = ['dfs', 'add_edge', 'del_edge', 'display', 'del_graph']
+        opt = ['dfs', 'bfs', 'add_edge', 'del_edge', 'display', 'del_graph']
 
         if not any(o in self.options for o in opt):
             self.options.extend(opt)
@@ -68,7 +68,7 @@ class UserInterface:
         del self.graphs[graph_name]
         
         if not self.graphs:
-            opt_remove = ['dfs', 'add_edge', 'del_edge', 'display', 'del_graph']
+            opt_remove = ['dfs', 'bfs', 'add_edge', 'del_edge', 'display', 'del_graph']
             self.options = [opt for opt in self.options if opt not in opt_remove]
 
         print(f"{graph_name} was successfully deleted")
@@ -162,6 +162,26 @@ class UserInterface:
         msg = f"Result of Deep First Search for graph {graph_name}\n"
         print(msg, dfs_path)
 
+    def _bfs(self):
+        msg = "Choose the name of the graph -> "
+        graph_name = self._get_user_input(msg, 'str')
+
+        if graph_name not in self.graphs.keys():
+            print(f"{graph_name} doesnt exist. Please try again")
+            return
+        
+        msg = "Enter the starting vertice -> "
+        start_ver = self._get_user_input(msg, 'str')
+        
+        if start_ver not in self.graphs[graph_name].vertices:
+            print(f"{start_ver} does not exit. Please, try again")
+
+        bfs_path = self.graphs[graph_name].bfs(start_ver)
+
+        msg = f"Result of Deep First Search for graph {graph_name}\n"
+        print(msg, bfs_path)
+
+
     def _display_graph(self):
         msg = "Choose the name of the graph -> "
         graph_name = self._get_user_input(msg, 'str')
@@ -170,10 +190,7 @@ class UserInterface:
             print(f"{graph_name} doesnt exist. Please try again")
             return
         
-        graph_matrix = self.graphs[graph_name].display_matrix()
-
-        msg = f"Content of the graph {graph_name}\n"
-        print(msg, graph_matrix)
+        self.graphs[graph_name].visualize()
 
 
     def run(self):
@@ -211,6 +228,9 @@ class UserInterface:
 
                 elif user_choice == 'dfs':
                     self._dfs()
+
+                elif user_choice == 'bfs':
+                    self._bfs()
                 
                 elif user_choice == 'display':
                     self._display_graph()
