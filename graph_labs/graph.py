@@ -104,3 +104,49 @@ class UndirectedGraph:
         for s, e, w in mst:
             g.add_edge(s, e, w)
         g.visualize()
+
+    def prim(self, start=None):
+        
+        if start is None:
+            start = list(self.vertices.keys())[0]
+        
+        
+        nodes_in_tree = [start]
+        
+        mst_edges = []
+        
+        
+        while len(nodes_in_tree) < len(self.vertices):
+            best_edge = None
+            best_weight = float('inf') 
+            
+            
+            for node in nodes_in_tree:
+                
+                for other_node in self.vertices:
+                    
+                    if other_node in nodes_in_tree:
+                        continue
+                    
+                    
+                    i, j = self.vertices[node], self.vertices[other_node]
+                    if self.matrix[i][j][0]:
+                        weight = self.matrix[i][j][1]
+                        
+                        if weight < best_weight:
+                            best_weight = weight
+                            best_edge = (node, other_node, weight)
+            
+            if best_edge is None:
+                print("Граф не зв'язний! MST є частковим.")
+                break
+            
+            u, v, w = best_edge
+            nodes_in_tree.append(v)
+            mst_edges.append((u, v, w))
+        
+        g = UndirectedGraph(list(self.vertices.keys()))
+        for u, v, w in mst_edges:
+            g.add_edge(u, v, w)
+        
+        g.visualize()
