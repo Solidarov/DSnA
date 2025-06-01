@@ -8,20 +8,20 @@ class UndirectedGraph:
         vertices = list(dict.fromkeys(vertices))
         self.vertices = {v:i for i, v in enumerate(vertices)}
         self.q_vertices = len(self.vertices.keys())
-        self.matrix = [[0] * self.q_vertices for _ in range(self.q_vertices)]
+        self.matrix = [[(0,0)] * self.q_vertices for _ in range(self.q_vertices)]
 
-    def add_edge(self, start, end):
+    def add_edge(self, start, end, weight=0):
         if start not in self.vertices or end not in self.vertices:
             return False
-        self.matrix[self.vertices[start]][self.vertices[end]] = 1
-        self.matrix[self.vertices[end]][self.vertices[start]] = 1
+        self.matrix[self.vertices[start]][self.vertices[end]] = (1, weight)
+        self.matrix[self.vertices[end]][self.vertices[start]] = (1, weight)
         return True
 
     def del_edge(self, start, end):
         if start not in self.vertices or end not in self.vertices:
             return False
-        self.matrix[self.vertices[start]][self.vertices[end]] = 0
-        self.matrix[self.vertices[end]][self.vertices[start]] = 0
+        self.matrix[self.vertices[start]][self.vertices[end]] = (0,0)
+        self.matrix[self.vertices[end]][self.vertices[start]] = (0,0)
         return True
     
     
@@ -34,9 +34,13 @@ class UndirectedGraph:
         for v1 in self.vertices:
             for v2 in self.vertices:
                 i, j = self.vertices[v1], self.vertices[v2]
-                if self.matrix[i][j] and i < j:  # Щоб не дублювати ребра
-                    G.add_edge(v1, v2)
-        nx.draw(G, with_labels=True, node_color='lightblue', edge_color='black')
+                if self.matrix[i][j][0] and i < j:  # Щоб не дублювати ребра
+                    G.add_edge(v1, v2, weight=self.matrix[i][j][1])
+        
+        pos = nx.spring_layout(G)
+        nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='black')
+        edge_labels = nx.get_edge_attributes(G, 'weight')
+        nx.draw_networkx_edge_labels(G, pos, edge_labels, label_pos=0.5)
         plt.show()
 
 
@@ -67,3 +71,36 @@ class UndirectedGraph:
                     if self.matrix[self.vertices[vertex]][self.vertices[neighbor]] and neighbor not in visited:
                         queue.append(neighbor)
         return result
+    
+    def kruskal(self):
+
+        edges = []
+        for v1 in self.vertices:
+            for v2 in self.vertices:
+                i, j = self.vertices[v1], self.vertices[v2]
+                if self.matrix[i][j][0] and i < j:
+                    edges.append((self.matrix[i][j][1], v1, v2))
+        
+        edges.sort()
+        
+        parent = {v: v for v in self.vertices}
+        
+        def find(v):
+            while parent[v] != v:
+                parent[v] = parent[parent[v]]
+                v = parent[v]
+            return v
+        
+        def union(u, v):
+            parent[find(u)] = find(v)
+        
+        mst = []
+        for weight, u, v in edges:
+            if find(u) != find(v):
+                mst.append((u, v, weight))
+                union(u, v)
+
+        g = UndirectedGraph([i for i in parent])
+        for s, e, w in mst:
+            g.add_edge(s, e, w)
+        g.visualize()

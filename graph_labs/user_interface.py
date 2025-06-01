@@ -22,13 +22,13 @@ class UserInterface:
             try:  
                 user_choice = input(msg).lower().strip()
                 
-                if u_type == "str":
+                if u_type == "s":
                     return user_choice
                 
-                elif u_type == "int":
-                    return int(user_choice)
+                elif u_type == "i":
+                    return int(user_choice) if user_choice else 0
                 
-                elif u_type == "few":
+                elif u_type == "l":
                     return list(user_choice.split())
                 
                 else:
@@ -42,24 +42,24 @@ class UserInterface:
 
     def _create_graph(self):
         msg = "Enter the name of the graph -> "
-        graph_name = self._get_user_input(msg, 'str')
+        graph_name = self._get_user_input(msg, 's')
 
         if graph_name in self.graphs or not graph_name:
             print(f"Please, provide the valid name of the graph")
             return
 
         msg = "Enter the name of vertices, separate by space -> "
-        vertices = self._get_user_input(msg, 'few')
+        vertices = self._get_user_input(msg, 'l')
         self.graphs[graph_name] = UndirectedGraph(vertices)
 
-        opt = ['dfs', 'bfs', 'add_edge', 'del_edge', 'display', 'del_graph']
+        opt = ['dfs', 'bfs', 'kruskal', 'add_edge', 'del_edge', 'display', 'del_graph']
 
         if not any(o in self.options for o in opt):
             self.options.extend(opt)
 
     def _delete_graph(self):
         msg = "Choose the name of the graph -> "
-        graph_name = self._get_user_input(msg, 'str')
+        graph_name = self._get_user_input(msg, 's')
 
         if graph_name not in self.graphs.keys():
             print(f"{graph_name} doesnt exist. Please try again")
@@ -68,7 +68,7 @@ class UserInterface:
         del self.graphs[graph_name]
         
         if not self.graphs:
-            opt_remove = ['dfs', 'bfs', 'add_edge', 'del_edge', 'display', 'del_graph']
+            opt_remove = ['dfs', 'bfs', 'kruskal', 'add_edge', 'del_edge', 'display', 'del_graph']
             self.options = [opt for opt in self.options if opt not in opt_remove]
 
         print(f"{graph_name} was successfully deleted")
@@ -84,7 +84,7 @@ class UserInterface:
 
     def _add_edges(self):
         msg = "Choose the name of the graph -> "
-        graph_name = self._get_user_input(msg, 'str')
+        graph_name = self._get_user_input(msg, 's')
 
         if graph_name not in self.graphs.keys():
             print(f"{graph_name} doesnt exist. Please try again")
@@ -92,18 +92,24 @@ class UserInterface:
         
         while True:
             msg = "\nEnter the start vertice (type 'q' to quit) -> "
-            start_ver = self._get_user_input(msg, 'str')
+            start_ver = self._get_user_input(msg, 's')
 
             if start_ver == 'q': 
                 break
 
             msg = "Enter the end vertice -> "
-            end_ver = self._get_user_input(msg, 'str')
+            end_ver = self._get_user_input(msg, 's')
 
             if end_ver == 'q':
                 break
+            
+            msg = "Enter the weight (optional) -> "
+            weight = self._get_user_input(msg, 'i')
 
-            if self.graphs[graph_name].add_edge(start_ver, end_ver):
+            if weight == 'q':
+                break
+
+            if self.graphs[graph_name].add_edge(start_ver, end_ver, weight):
                 print(f"{start_ver} and {end_ver} was successfully connected")
 
             elif not self.graphs[graph_name].add_edge(start_ver, end_ver):
@@ -115,7 +121,7 @@ class UserInterface:
 
     def _del_edges(self):
         msg = "Choose the name of the graph -> "
-        graph_name = self._get_user_input(msg, 'str')
+        graph_name = self._get_user_input(msg, 's')
 
         if graph_name not in self.graphs.keys():
             print(f"{graph_name} doesnt exist. Please try again")
@@ -123,13 +129,13 @@ class UserInterface:
         
         while True:
             msg = "Enter the start vertice (type 'q' to quit) -> "
-            start_ver = self._get_user_input(msg, 'str')
+            start_ver = self._get_user_input(msg, 's')
 
             if start_ver == 'q': 
                 break
 
             msg = "Enter the end vertice -> "
-            end_ver = self._get_user_input(msg, 'str')
+            end_ver = self._get_user_input(msg, 's')
 
             if end_ver == 'q':
                 break
@@ -145,14 +151,14 @@ class UserInterface:
     
     def _dfs(self):
         msg = "Choose the name of the graph -> "
-        graph_name = self._get_user_input(msg, 'str')
+        graph_name = self._get_user_input(msg, 's')
 
         if graph_name not in self.graphs.keys():
             print(f"{graph_name} doesnt exist. Please try again")
             return
         
         msg = "Enter the starting vertice -> "
-        start_ver = self._get_user_input(msg, 'str')
+        start_ver = self._get_user_input(msg, 's')
         
         if start_ver not in self.graphs[graph_name].vertices:
             print(f"{start_ver} does not exit. Please, try again")
@@ -164,14 +170,14 @@ class UserInterface:
 
     def _bfs(self):
         msg = "Choose the name of the graph -> "
-        graph_name = self._get_user_input(msg, 'str')
+        graph_name = self._get_user_input(msg, 's')
 
         if graph_name not in self.graphs.keys():
             print(f"{graph_name} doesnt exist. Please try again")
             return
         
         msg = "Enter the starting vertice -> "
-        start_ver = self._get_user_input(msg, 'str')
+        start_ver = self._get_user_input(msg, 's')
         
         if start_ver not in self.graphs[graph_name].vertices:
             print(f"{start_ver} does not exit. Please, try again")
@@ -181,10 +187,21 @@ class UserInterface:
         msg = f"Result of Deep First Search for graph {graph_name}\n"
         print(msg, bfs_path)
 
+    def _kruskal(self):
+        msg = "Choose the name of the graph -> "
+        graph_name = self._get_user_input(msg, 's')
+
+        if graph_name not in self.graphs.keys():
+            print(f"{graph_name} doesnt exist. Please try again")
+            return
+        
+        msg = f"Result of the Kruskal Algorithm for graph {graph_name}"
+        print(msg)
+        self.graphs[graph_name].kruskal()
 
     def _display_graph(self):
         msg = "Choose the name of the graph -> "
-        graph_name = self._get_user_input(msg, 'str')
+        graph_name = self._get_user_input(msg, 's')
 
         if graph_name not in self.graphs.keys():
             print(f"{graph_name} doesnt exist. Please try again")
@@ -203,7 +220,7 @@ class UserInterface:
                 msg = "\nAvailable options: " + str(", ".join(self.options))
                 msg += "\nEnter the options -> "
                 
-                user_choice = self._get_user_input(msg, 'str')
+                user_choice = self._get_user_input(msg, 's')
                 
                 if user_choice not in self.options:
                     raise ValueError
@@ -232,6 +249,9 @@ class UserInterface:
                 elif user_choice == 'bfs':
                     self._bfs()
                 
+                elif user_choice == 'kruskal':
+                    self._kruskal()
+
                 elif user_choice == 'display':
                     self._display_graph()
 
