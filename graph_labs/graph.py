@@ -150,3 +150,56 @@ class UndirectedGraph:
             g.add_edge(u, v, w)
         
         g.visualize()
+
+    def _visualize_paths(self, start, distances, previous):
+        msg = f"\nShortest path from vertex {start}:"
+        
+        for vertex in self.vertices:
+            if vertex == start:
+                continue
+            
+            if distances[vertex] == float('inf'):
+                msg += f"\n\tTo {vertex}: doesnt have path"
+            else:
+                path = []
+                current = vertex
+                while current is not None:
+                    path.append(current)
+                    current = previous[current]
+                path.reverse()
+                
+                msg += f"\n\tTo {vertex}: {' -> '.join(path)}, distance  = {distances[vertex]}"
+        return msg
+
+    def dijkstra(self, start=None):
+        if start is None:
+            start = min(self.vertices.keys(), key=lambda v: self.vertices[v])
+
+        distances = {vertex: float('inf') for vertex in self.vertices}
+        distances[start] = 0
+        
+        previous = {vertex: None for vertex in self.vertices}
+        
+        unvisited = set(self.vertices)
+        
+        while unvisited:
+            current = min(unvisited, key=lambda v: distances[v])
+            
+            if distances[current] == float('inf'):
+                break
+                
+            unvisited.remove(current)
+            
+            for neighbor in self.vertices:
+                i, j = self.vertices[current], self.vertices[neighbor]
+                if not self.matrix[i][j][0]:
+                    continue
+                    
+                weight = self.matrix[i][j][1]
+                new_distance = distances[current] + weight
+                
+                if new_distance < distances[neighbor]:
+                    distances[neighbor] = new_distance
+                    previous[neighbor] = current
+                    
+        return self._visualize_paths(start, distances, previous)

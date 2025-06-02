@@ -52,7 +52,7 @@ class UserInterface:
         vertices = self._get_user_input(msg, 'l')
         self.graphs[graph_name] = UndirectedGraph(vertices)
 
-        opt = ['dfs', 'bfs', 'kruskal', 'prim','add_edge', 'del_edge', 'display', 'del_graph']
+        opt = ['dfs', 'bfs', 'kruskal', 'prim', 'dijkstra', 'add_edge', 'del_edge', 'display', 'del_graph']
 
         if not any(o in self.options for o in opt):
             self.options.extend(opt)
@@ -68,7 +68,7 @@ class UserInterface:
         del self.graphs[graph_name]
         
         if not self.graphs:
-            opt_remove = ['dfs', 'bfs', 'kruskal', 'prim','add_edge', 'del_edge', 'display', 'del_graph']
+            opt_remove = ['dfs', 'bfs', 'kruskal', 'prim', 'dijkstra', 'add_edge', 'del_edge', 'display', 'del_graph']
             self.options = [opt for opt in self.options if opt not in opt_remove]
 
         print(f"{graph_name} was successfully deleted")
@@ -217,6 +217,22 @@ class UserInterface:
         print(msg)
         self.graphs[graph_name].prim(start_ver)
         
+    def _dijkstra(self):
+        msg = "Choose the name of the graph -> "
+        graph_name = self._get_user_input(msg, 's')
+
+        if graph_name not in self.graphs.keys():
+            print(f"{graph_name} doesnt exist. Please try again")
+            return
+        
+        msg = "Enter the starting vertice -> "
+        start_ver = self._get_user_input(msg, 's')
+        
+        if start_ver not in self.graphs[graph_name].vertices:
+            start_ver = None
+
+        msg = f"Result of the Dijkstra Algorithm for graph {graph_name}"
+        print(msg, self.graphs[graph_name].dijkstra(start_ver))
 
     def _display_graph(self):
         msg = "Choose the name of the graph -> "
@@ -273,6 +289,9 @@ class UserInterface:
 
                 elif user_choice == 'prim':
                     self._prim()
+
+                elif user_choice == 'dijkstra':
+                    self._dijkstra()
 
                 elif user_choice == 'display':
                     self._display_graph()
